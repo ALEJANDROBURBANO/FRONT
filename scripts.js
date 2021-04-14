@@ -1,3 +1,18 @@
+$(document).ready(()=>{
+	(()=>{
+
+		if (localStorage.length >= 1) {
+
+			let keys = Object.keys(localStorage);
+		    let i = keys.length;
+
+		    while ( i-- ) 
+		        render_product(localStorage.getItem(keys[i]));
+		    
+		}
+	})();
+})
+
 $('#form_product').hide();
 
 function new_product(){
@@ -52,6 +67,51 @@ function addCar(ele) {
     $('.count-car').text(count)
 }
 
+function render_product(product) {
+
+	try{
+
+		let infoProduct=JSON.parse(product.replace(/&quot;/g,'"'));
+		
+		let img='img/nuevo-producto.jpg';
+		if(infoProduct.img !== null)
+			img=infoProduct.img
+
+		let htmlProduct=`
+		<div class="white" id="product_1">
+
+	        <div class="row">
+	          <div class="col-md-3 ">
+	            <img src="${img}" alt="Imagen" class="img-product">
+	          </div>
+	          <div class=" col-md-6">
+	            <h5><b class="name">${infoProduct.name}</b></h5>
+	            <h6 class="description">
+	            	${infoProduct.description}
+	            </h6> 
+	          </div>
+	          <div class="col-md-3">
+	           
+	              <span class="descuento"> ${infoProduct.percentaje} % DE DESCUENTO</span>
+
+	              <h5 class="price-after">$ ${infoProduct.price} COP</h5>            
+	              <h4 class="price">$ ${infoProduct.new_price} COP</h4>  
+
+	              <button class="btn-purchase" onclick="addCar(this)">AÑADIR AL CARRITO</button>
+
+	          </div>
+	        </div>
+	      </div>
+		`;
+		
+		$('#contenedorProductosRegistrados').append(htmlProduct);
+
+	} catch(err) {
+		console.log(err.message);
+	}
+}
+
+
 $("#form_login").submit(function(e) {
     e.preventDefault();
 
@@ -89,33 +149,45 @@ function change_view(ele){
 
 }
 
+function create_prduct(product){
+
+	let index=parseInt($('.row').length);
+	localStorage.setItem(index,JSON.stringify(product));
+
+	return 1;
+}
+
+function format_number(number){
+	return new Intl.NumberFormat("COP").format(number);
+}
+
+function get_new_price(price, percentaje_val){
+
+	let calcule_price=((price*percentaje_val)/100);
+	let new_price=price-calcule_price;
+
+	return new_price;
+}
+
 $("#form_new_product").submit(function(e) {
 
     e.preventDefault();
 
-    name = $('[name="name"]').val();
-	description = $('[name="description"]').val();
-	price = $('[name="price"]').val();
-	percentaje = $('[name="percentaje"]').val();
+	let price=parseFloat($('#price').val());
+	let percentaje_val=parseFloat($('#percentajeVal').val());
 
-	$('#template_new_product .white:last').clone().appendTo('#row_products');
+	let new_price=get_new_price(price, percentaje_val);
 
-	$('#row_products .white:last').find('.name').text(name);
-	$('#row_products .white:last').find('.description').text(description);
-	$('#row_products .white:last').find('.price').text("$ "+price);
+	let product={
+		name:$.trim($('#name').val()),
+		price:format_number(price),
+		percentaje:percentaje_val,
+		new_price:format_number(new_price),
+		description:$('#description').val(),
+		img:$('#blah').attr('src')||null
+	};
 
-	if (percentaje>0) {
-		calcule_price=((price*percentaje)/100);
-		new_price=price-calcule_price;
-		$('#row_products .white:last').find('.price').text("$ "+new_price);
-		$('#row_products .white:last').find('.descuento').text(percentaje+" % DE DESCUENTO");
-	}else{
-		$('#row_products .white:last').find('.price-after').hide();
-		$('#row_products .white:last').find('.descuento').hide();
-		$('#row_products .white:last').find('.new-price').text("$ "+price);
-	}
-
-	$('#template_new_product .white:last').find('img').attr('src', 'img/image_def.png');
-
-	cancel_new_product();
+	if (create_prduct(product))
+		location.reload();
 });
+

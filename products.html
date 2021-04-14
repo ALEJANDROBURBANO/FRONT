@@ -230,6 +230,9 @@
 
             <div id="row_products">
 
+              <div id="contenedorProductosRegistrados">
+              </div>
+
               <div class="white" id="product_1">
         
                 <div class="row">
@@ -404,7 +407,13 @@
         <div id="form_product" class="row ">
        
           <div class="col-md-6 offset-md-3  white">
-            <form action="productos.html" method="" id="form_new_product" accept-charset="utf-8">
+            <form 
+              action="#"
+              autocomplete="off"
+              id="form_new_product" 
+              accept-charset="utf-8"
+            >
+
               <h3>Agregar producto</h3>
               <h6>Todos los campos identificados con <span class="text-danger">*</span> son de caracter obligario.</h6>
 
@@ -433,24 +442,53 @@
               </div>
 
               <div class="form-group">
-                <label>Nombre</label> <span class="text-danger">*</span>
-                <input type="" name="name" class="form-control">
+                <label for="name">Nombre</label> 
+                <span class="text-danger">*</span>
+                <input type="text" name="name" id="name" required>
               </div>
 
               <div class="form-group">
-                <label>Descripción</label> <span class="text-danger">*</span>
-                <textarea name="description" class="form-control"></textarea>
+                <label for="description">Descripción</label> 
+                <span class="text-danger">*</span>
+
+                <textarea 
+                  name="description" 
+                  id="description" 
+                  class="form-control"
+                ></textarea>
+
               </div>
 
               <div class="form-group">
-                <label>Precio </label> <span class="text-danger">*</span>
-                <input type="number" name="price" class="form-control">
+                <label>Precio </label> 
+                <span class="text-danger">*</span>
+                <input 
+                  type="number" 
+                  name="price" 
+                  class="form-control"
+                  name="price"
+                  id="price"
+                  required
+                  min="0"
+                >
               </div>
 
 
               <div class="form-group">
-                <label>Porcentaje de descuento</label> <span class="text-danger">*</span> <b id="percentaje">0 %</b >
-                <input type="range" min="0" max="100" name="percentaje" value="0" onchange="$('#percentaje').text(this.value+' %')" class="form-control">
+                <label>Porcentaje de descuento</label> 
+                <span class="text-danger">*</span>
+                <b id="percentaje">0 %</b >
+
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="100" 
+                  name="percentaje" 
+                  id="percentajeVal" 
+                  value="0" 
+                  onchange="$('#percentaje').text(this.value+' %')" 
+                  class="form-control"
+                  >
               </div>
 
               <div class="form-group">

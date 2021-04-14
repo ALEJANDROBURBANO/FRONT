@@ -39,6 +39,13 @@ body{
 	text-align: center;
 }
 
+#contenedorProductosRegistrados {
+	width: 100%;
+	height: auto;
+	margin: 0px;
+	padding: 0px;
+}
+
 
 .price{
 	color: gray;
